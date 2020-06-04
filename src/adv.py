@@ -2,7 +2,7 @@ from room import Room
 from player import Player
 from helpers import sys_clear as cls
 
-# Declare all the rooms 
+# Declare all the rooms
 
 room = {
     'outside':  Room("Outside Cave Entrance",
@@ -42,10 +42,11 @@ room['treasure'].s_to = room['narrow']
 # Make a new player object that is currently in the 'outside' room.
 cls()
 
-player = Player(input('Please giver your Player a name: '))
+player = Player(input('Please give your Player a name: '), room['outside'])
 
-loc = room[player.location].name
-desc = room[player.location].description
+loc = player.location.name
+
+desc = player.location.description
 
 # Write a loop that:
 #
@@ -60,21 +61,27 @@ desc = room[player.location].description
 
 playing_game = True
 
+cls()
+print(
+    f'Welcome {player.name} you are currently at an {player.location.name} \n\n')
+print(f'{player.location.description}\n\n')
+
+print('To move press n for north, e for east, s for south or w for west. To quit press q\n')
+
+action = input('What do you wish to do? ')
+
 while playing_game:
-    cls()
-    print(f'Welcome {player.name} you are currently at an {loc} \n\n')
-    print(f'{desc}\n\n')
 
-    print('To move press n for north, e for east, s for south or w for west. To quit press q\n')
+    if action == 'q':
+        playing_game = False
 
-    if player.location == 'outside':
-        pass
-    elif player.location == 'foyer':
-        pass
-    elif player.location == 'overlook':
-        pass
-    elif player.location == 'narrow':
-        pass
-    elif player.location == 'treasure'
-    
-    playing_game = False
+    try:
+        player.location = player.move(action)
+        cls()
+        print(f'You have entered the {player.location.name}')
+    except:
+        print('You can\'t got that direction!')
+        cls()
+        print(f'{player.location.description} \n\n')
+        print('To move press n for north, e for east, s for south or w for west. To quit press q\n\n')
+        action = input('What do you wish to do? ')
