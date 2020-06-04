@@ -15,6 +15,10 @@ passages run north and east."""),
 into the darkness. Ahead to the north, a light flickers in
 the distance, but there is no way across the chasm."""),
 
+    'death': Room("Dead", """For reasons known only to you, you have 
+leapt over the edge into the darkend abyss. Only the fleeting remnants of your echoing
+voice as you scream is all that remain of your existence"""),
+
     'narrow':   Room("Narrow Passage", """The narrow passage bends here from west
 to north. The smell of gold permeates the air."""),
 
@@ -30,6 +34,7 @@ room['outside'].n_to = room['foyer']
 room['foyer'].s_to = room['outside']
 room['foyer'].n_to = room['overlook']
 room['foyer'].e_to = room['narrow']
+room['overlook'].n_to = room['death']
 room['overlook'].s_to = room['foyer']
 room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
@@ -44,10 +49,7 @@ cls()
 
 player = Player(input('Please give your Player a name: '), room['outside'])
 
-loc = player.location.name
-
-desc = player.location.description
-
+movements = 'To move press n for north, e for east, s for south or w for west. To quit press q\n'
 # Write a loop that:
 #
 # * Prints the current room name
@@ -66,22 +68,34 @@ print(
     f'Welcome {player.name} you are currently at an {player.location.name} \n\n')
 print(f'{player.location.description}\n\n')
 
-print('To move press n for north, e for east, s for south or w for west. To quit press q\n')
+print(movements)
 
 action = input('What do you wish to do? ')
 
-while playing_game:
-
-    if action == 'q':
+if action == 'q':
         playing_game = False
+
+while playing_game:
 
     try:
         player.location = player.move(action)
         cls()
-        print(f'You have entered the {player.location.name}')
+        if player.location.name == 'Dead':
+            print(
+                f'You have fallen to your death\n\n {player.location.description}\n')
+            playing_game = False
+        else:
+            print(
+                f'You have entered the {player.location.name}\n\n{player.location.description}')
+            print('\n' + movements)
+            action = input('What do you wish to do? ')
+            if action == 'q':
+                playing_game = False
     except:
         print('You can\'t got that direction!')
         cls()
         print(f'{player.location.description} \n\n')
-        print('To move press n for north, e for east, s for south or w for west. To quit press q\n\n')
+        print(movements)
         action = input('What do you wish to do? ')
+        if action == 'q':
+            playing_game = False
