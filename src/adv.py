@@ -1,4 +1,6 @@
 from room import Room
+from player import Player
+from helpers import sys_clear as cls
 
 # Declare all the rooms 
 
@@ -38,6 +40,12 @@ room['treasure'].s_to = room['narrow']
 #
 
 # Make a new player object that is currently in the 'outside' room.
+cls()
+
+player = Player(input('Please giver your Player a name: '))
+
+loc = room[player.location].name
+desc = room[player.location].description
 
 # Write a loop that:
 #
@@ -49,3 +57,24 @@ room['treasure'].s_to = room['narrow']
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
+
+playing_game = True
+
+while playing_game:
+    cls()
+    print(f'Welcome {player.name} you are currently at an {loc} \n\n')
+    print(f'{desc}\n\n')
+
+    print('To move press n for north, e for east, s for south or w for west. To quit press q\n')
+
+    if player.location == 'outside':
+        pass
+    elif player.location == 'foyer':
+        pass
+    elif player.location == 'overlook':
+        pass
+    elif player.location == 'narrow':
+        pass
+    elif player.location == 'treasure'
+    
+    playing_game = False
