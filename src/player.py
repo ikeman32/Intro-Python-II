@@ -2,6 +2,12 @@
 # currently.
 
 class Player:
-    def __init__(self, name, location = 'outside'):
+    def __init__(self, name, location):
         self.name = name
         self.location = location
+
+    def move(self, direction):
+        
+        return getattr(self.location, f'{direction}_to')
+
+
