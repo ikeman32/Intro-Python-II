@@ -1,6 +1,6 @@
 from room import Room
 from player import Player
-from helpers import sys_clear as cls
+from helpers import sys_clear as cls#For clearing the screen
 
 # Declare all the rooms
 
@@ -78,24 +78,35 @@ if action == 'q':
 while playing_game:
 
     try:
-        player.location = player.move(action)
+        player.location = player.move(action)#Changes the players location via room['name'].n_to etc.
+
         cls()
-        if player.location.name == 'Dead':
+
+        if player.location.name == 'Dead':#If the player dies end the game
             print(
                 f'You have fallen to your death\n\n {player.location.description}\n')
+
             playing_game = False
-        else:
+        
+        else:#If the player enters a valid selection move to the indicated room
             print(
                 f'You have entered the {player.location.name}\n\n{player.location.description}')
             print('\n' + movements)
+
             action = input('What do you wish to do? ')
-            if action == 'q':
+            
+            if action == 'q':#Quite the game
                 playing_game = False
-    except:
+    
+    except:#If player enters an invalid selection
         print('You can\'t got that direction!')
+
         cls()
+
         print(f'{player.location.description} \n\n')
         print(movements)
+
         action = input('What do you wish to do? ')
+
         if action == 'q':
             playing_game = False
