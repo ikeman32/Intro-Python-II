@@ -1,9 +1,7 @@
 from room import Room
 from player import Player
-from helpers import sys_clear as cls#For clearing the screen
+from helpers import sys_clear as cls  # For clearing the screen
 from item import Item
-
-
 
 
 # Declare all the rooms
@@ -41,7 +39,7 @@ earlier adventurers. The only exit is to the south.
 """),
 }
 
-room['foyer'].items.append(Item('sword', '''A one-handed sword'''))
+room['foyer'].items.append(Item('a sword', '''A one-handed sword'''))
 room['overlook'].items.append(Item('a map', '''A map showing the location of the treasure room.
     From the Foyer go east to Narrow Passage then go north the Treasure room is there.'''))
 # Link rooms together
@@ -67,8 +65,8 @@ player = Player(input('Please give your Player a name: '), room['outside'])
 
 movements = '''To move press n for north, e for east, s for south or w for west. 
 Type look to have a look around.
-Type take + item_name to pick up any items in the room.
-Type drop + item_name of any item you may be carrying.
+Type take to pick up any items in the room.
+Type drop any item you may be carrying.
 Press i to list the items in you inventory.
 To quit press q.
 
@@ -96,45 +94,58 @@ print(f'{player.location.description}\n\n')
 
 action = input('What do you wish to do? ')
 
+# Changes the players location via room['name'].n_to etc.
+player.location = player.move(action)
+
 if action == 'q':
-        playing_game = False
+    playing_game = False
 
 while playing_game:
 
     try:
-        player.location = player.move(action)#Changes the players location via room['name'].n_to etc.
-
         cls()
 
-        if player.location.name == 'Dead':#If the player dies end the game
+        if player.location.name != 'Dead':
+            if action == 'q':  # Quite the game
+                playing_game = False
+            elif action == 'look':
+                for item in player.location.items:
+                    cls()
+                    print(f'You find {item.name}, {item.description}\n')
+                    print(
+                        f'You are in the {player.location.name}\n\n{player.location.description}')
+
+                action = input('What do you wish to do? ')
+            elif action == 'take':
+                playing_game = False
+                    #print('Nothing to see')
+                '''player.name.items.append(player.location.items)
+                player.location.items.clear()   
+
+                print(f'You take {player.name.items} \n')   
+                print(
+                f'You are in the {player.location.name}\n\n{player.location.description}')
+
+                action = input('What do you wish to do? ')    '''
+
+            print('\n' + movements)
+            print(
+                f'You are in the {player.location.name}\n\n{player.location.description}')
+
+            action = input('What do you wish to do? ')
+
+        else:
             print(
                 f'You have fallen to your death\n\n {player.location.description}\n')
 
             playing_game = False
-        
-        else:#If the player enters a valid selection move to the indicated room
-            print('\n' + movements)
-            print(
-                f'You have entered the {player.location.name}\n\n{player.location.description}')
-            
 
-            action = input('What do you wish to do? ')
-
-            if action == 'q':#Quite the game
-                playing_game = False
-            elif action == 'look':
-                for item in player.location.items:
-                    print(f'{item.name}')
-                playing_game = False
-
-    
-    except:#If player enters an invalid selection
+    except:  # If player enters an invalid selection
         cls()
-        
+
         print(movements)
         print('You can\'t got that direction!')
         print(f'{player.location.description} \n\n')
-        
 
         action = input('What do you wish to do? ')
 
